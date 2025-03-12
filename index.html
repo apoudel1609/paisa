@@ -5,54 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>User Balance Calendar</title>
     <style>
-      body { font-family: Arial, sans-serif; margin: 20px; text-align: center; }
-      h1 { color: #333; }
-      #calendarContainer { margin-top: 20px; }
-      button { padding: 10px 20px; background-color: #4CAF50; color: white; border: none; cursor: pointer; margin-top: 10px; }
-      button:hover { background-color: #45a049; }
-      .loading { color: #888; }
-      .error { color: red; }
+      body { margin: 0; padding: 0; text-align: center; }
+      iframe { border: none; width: 100%; height: 100vh; } /* Full viewport height */
     </style>
   </head>
   <body>
-    <h1>Your Balance Calendar</h1>
-    <div id="calendarContainer"><div class="loading">Loading...</div></div>
-    <br>
-    <button onclick="fetchData()">Refresh Now</button>
-    <script>
-      let cachedHtml = '<div class="loading">Loading...</div>';
-
-      function updateCalendar(html) {
-        const container = document.getElementById('calendarContainer');
-        container.innerHTML = html;
-      }
-
-      function fetchData() {
-        document.getElementById('calendarContainer').innerHTML = '<div class="loading">Refreshing...</div>';
-        fetch('https://script.google.com/macros/s/AKfycbwLMVTrWeqUpk4NHcP1rI-BCoQNcCEH1ggBKnoxbOhinurnrgSYXAjdk7ZZQ4yi02I_/exec')
-          .then(response => {
-            if (!response.ok) throw new Error('Network response was not ok');
-            return response.text();
-          })
-          .then(html => {
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(html, 'text/html');
-            const calendar = doc.querySelector('div#calendarContainer')?.innerHTML || doc.body.innerHTML;
-            if (calendar) {
-              cachedHtml = calendar;
-              updateCalendar(cachedHtml);
-            } else {
-              throw new Error('No calendar content found');
-            }
-          })
-          .catch(error => {
-            console.error('Fetch error:', error);
-            updateCalendar('<div class="error">Error: ' + error.message + '</div>' + cachedHtml);
-          });
-      }
-
-      window.addEventListener('load', fetchData);
-      setInterval(fetchData, 5000);
-    </script>
+    <iframe src="https://script.google.com/macros/s/AKfycbwLMVTrWeqUpk4NHcP1rI-BCoQNcCEH1ggBKnoxbOhinurnrgSYXAjdk7ZZQ4yi02I_/exec" width="100%" height="100vh" frameborder="0"></iframe>
   </body>
 </html>
